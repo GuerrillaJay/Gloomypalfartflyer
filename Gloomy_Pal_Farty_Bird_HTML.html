@@ -1,0 +1,507 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="2022.7">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+  </style>
+</head>
+<body>
+<p class="p1">&lt;!DOCTYPE html&gt;</p>
+<p class="p1">&lt;html lang="en"&gt;</p>
+<p class="p1">&lt;head&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;meta charset="UTF-8"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;title&gt;Gloomy Pal in Space&lt;/title&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;link rel="preconnect" href="https://fonts.googleapis.com"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;link rel="preconnect" href="https://fonts.gstatic.com" crossorigin&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&amp;display=swap" rel="stylesheet"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;script src="https://cdn.tailwindcss.com"&gt;&lt;/script&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;script src="https://telegram.org/js/telegram-web-app.js"&gt;&lt;/script&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;style&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>body {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>font-family: 'Press Start 2P', cursive;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>background-color: #000;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>color: #fff;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>overflow: hidden;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>touch-action: none; /* Prevents scrolling on touch devices */</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>canvas {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>background-color: #000;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>display: block;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>margin: 0 auto;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>border: 4px solid #fff;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>border-radius: 8px;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>#ui-container {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>position: absolute;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>top: 0;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>left: 0;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>width: 100%;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>height: 100%;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>display: flex;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>flex-direction: column;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>justify-content: center;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>align-items: center;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>pointer-events: none; /* Let clicks pass through to the canvas */</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.ui-element {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>background-color: rgba(0,0,0,0.7);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>padding: 20px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>border-radius: 10px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>border: 2px solid #fff;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>text-align: center;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>pointer-events: auto; /* Buttons can be clicked */</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/style&gt;</p>
+<p class="p1">&lt;/head&gt;</p>
+<p class="p1">&lt;body class="flex items-center justify-center h-screen bg-black"&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div id="game-container" class="relative"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;canvas id="gameCanvas"&gt;&lt;/canvas&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div id="ui-container"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div id="startScreen" class="ui-element"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;h1 class="text-3xl mb-4"&gt;Gloomy Pal in Space&lt;/h1&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;p class="mb-6"&gt;Click or Press Space to Fart-Fly!&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;button id="startButton" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>Start Game</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;div id="gameOverScreen" class="ui-element hidden"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;h1 class="text-4xl mb-2"&gt;Game Over&lt;/h1&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;p class="text-xl mb-4"&gt;Final Score: &lt;span id="finalScore"&gt;0&lt;/span&gt;&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;button id="restartButton" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>Restart</p>
+<p class="p1"><span class="Apple-converted-space">                </span>&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;script&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>window.onload = function() {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>// --- DOM Elements ---</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const canvas = document.getElementById('gameCanvas');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const ctx = canvas.getContext('2d');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const startScreen = document.getElementById('startScreen');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const gameOverScreen = document.getElementById('gameOverScreen');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const startButton = document.getElementById('startButton');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const restartButton = document.getElementById('restartButton');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const finalScoreEl = document.getElementById('finalScore');</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>// --- Game Configuration ---</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const gameWidth = 380;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const gameHeight = 640;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>canvas.width = gameWidth;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>canvas.height = gameHeight;</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>// --- Sound Effects (Native Web Audio API) ---</p>
+<p class="p1"><span class="Apple-converted-space">            </span>let audioCtx;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>let audioReady = false;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>function initializeAudio() {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>if (!audioCtx) {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>audioCtx = new (window.AudioContext || window.webkitAudioContext)();</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>// Sound player function</p>
+<p class="p1"><span class="Apple-converted-space">            </span>function playSound(type) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>if (!audioReady) return;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>const now = audioCtx.currentTime;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const gainNode = audioCtx.createGain();</p>
+<p class="p1"><span class="Apple-converted-space">                </span>gainNode.connect(audioCtx.destination);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>if (type === 'fart') {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>const oscillator = audioCtx.createOscillator();</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>oscillator.type = 'sawtooth';</p>
+<p class="p2"><span class="Apple-converted-space">                    </span></p>
+<p class="p1"><span class="Apple-converted-space">                    </span>gainNode.gain.setValueAtTime(0.3, now);</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.4);</p>
+<p class="p2"><span class="Apple-converted-space">                    </span></p>
+<p class="p1"><span class="Apple-converted-space">                    </span>oscillator.frequency.setValueAtTime(100, now);</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>oscillator.frequency.exponentialRampToValueAtTime(40, now + 0.4);</p>
+<p class="p2"><span class="Apple-converted-space">                    </span></p>
+<p class="p1"><span class="Apple-converted-space">                    </span>oscillator.connect(gainNode);</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>oscillator.start(now);</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>oscillator.stop(now + 0.4);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>} else if (type === 'score') {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>const oscillator = audioCtx.createOscillator();</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>oscillator.type = 'sine';</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>oscillator.frequency.setValueAtTime(880, now); // A5 note</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>gainNode.gain.setValueAtTime(0.2, now);</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>gainNode.gain.exponentialRampToValueAtTime(0.001, now + 0.2);</p>
+<p class="p2"><span class="Apple-converted-space">                    </span></p>
+<p class="p1"><span class="Apple-converted-space">                    </span>oscillator.connect(gainNode);</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>oscillator.start(now);</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>oscillator.stop(now + 0.2);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>} else if (type === 'collision') {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>const noise = audioCtx.createBufferSource();</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>const bufferSize = audioCtx.sampleRate * 0.5; // 0.5 seconds of noise</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>let data = buffer.getChannelData(0);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                    </span>for (let i = 0; i &lt; bufferSize; i++) {</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>data[i] = Math.random() * 2 - 1;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>noise.buffer = buffer;</p>
+<p class="p2"><span class="Apple-converted-space">                    </span></p>
+<p class="p1"><span class="Apple-converted-space">                    </span>gainNode.gain.setValueAtTime(0.4, now);</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.3);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                    </span>noise.connect(gainNode);</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>noise.start(now);</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>noise.stop(now + 0.3);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>// --- Game State ---</p>
+<p class="p1"><span class="Apple-converted-space">            </span>let score = 0;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>let gameOver = false;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>let gameStarted = false;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>let frameCount = 0;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>// --- Player (Gloomy Pal) ---</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const player = {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>x: 60,</p>
+<p class="p1"><span class="Apple-converted-space">                </span>y: 250,</p>
+<p class="p1"><span class="Apple-converted-space">                </span>width: 75,</p>
+<p class="p1"><span class="Apple-converted-space">                </span>height: 70,</p>
+<p class="p1"><span class="Apple-converted-space">                </span>velocityY: 0,</p>
+<p class="p1"><span class="Apple-converted-space">                </span>gravity: 0.25,</p>
+<p class="p1"><span class="Apple-converted-space">                </span>lift: -6,</p>
+<p class="p1"><span class="Apple-converted-space">                </span>isFarting: false,</p>
+<p class="p1"><span class="Apple-converted-space">                </span>fartDuration: 0,</p>
+<p class="p1"><span class="Apple-converted-space">            </span>};</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>// --- Obstacles (Asteroids) ---</p>
+<p class="p1"><span class="Apple-converted-space">            </span>let asteroids = [];</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const asteroidWidth = 60;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const asteroidGap = 200;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const asteroidSpeed = -2;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const asteroidInterval = 120;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>// --- Background (Stars) ---</p>
+<p class="p1"><span class="Apple-converted-space">            </span>let stars = [];</p>
+<p class="p1"><span class="Apple-converted-space">            </span>for (let i = 0; i &lt; 100; i++) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>stars.push({</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>x: Math.random() * canvas.width,</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>y: Math.random() * canvas.height,</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>radius: Math.random() * 1.5,</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>alpha: Math.random()</p>
+<p class="p1"><span class="Apple-converted-space">                </span>});</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>// --- Event Listeners &amp; Game Control ---</p>
+<p class="p1"><span class="Apple-converted-space">            </span>function playerLift() {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>if (!gameOver &amp;&amp; gameStarted) {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>player.velocityY = player.lift;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>player.isFarting = true;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>player.fartDuration = 15;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>playSound('fart');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>function handleInput(event) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>event.preventDefault();</p>
+<p class="p1"><span class="Apple-converted-space">                </span>// Start audio context on first user interaction</p>
+<p class="p1"><span class="Apple-converted-space">                </span>if (!audioReady) {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>initializeAudio();</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>// Resume context if it was suspended</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>if (audioCtx.state === 'suspended') {</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>audioCtx.resume();</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>audioReady = true;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>console.log("Audio ready!");</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p2"><span class="Apple-converted-space">                </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>if (!gameStarted &amp;&amp; !gameOver) {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>startGame();</p>
+<p class="p1"><span class="Apple-converted-space">                </span>} else {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>playerLift();</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>function startGame() {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>startScreen.classList.add('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">                </span>canvas.style.pointerEvents = 'auto';<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>resetGame();</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.addEventListener('keydown', (e) =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>if (e.code === 'Space') {</p>
+<p class="p1"><span class="Apple-converted-space">                   </span>handleInput(e);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>});</p>
+<p class="p1"><span class="Apple-converted-space">            </span>canvas.addEventListener('mousedown', handleInput);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>canvas.addEventListener('touchstart', handleInput);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>startButton.addEventListener('click', handleInput);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>restartButton.addEventListener('click', resetGame);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>// --- Game Functions ---</p>
+<p class="p1"><span class="Apple-converted-space">            </span>function setGameOver() {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>if (!gameOver) { // Play sound only once</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>playSound('collision');</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>gameOver = true;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>function resetGame() {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>// Also ensures audio is ready on restart if first start was silent</p>
+<p class="p1"><span class="Apple-converted-space">                </span>if(!audioReady &amp;&amp; audioCtx) {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>audioCtx.resume();</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>audioReady = true;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>player.y = 250;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>player.velocityY = 0;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>player.isFarting = false;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>asteroids = [];</p>
+<p class="p1"><span class="Apple-converted-space">                </span>score = 0;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>gameOver = false;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>gameStarted = true;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>frameCount = 0;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>gameOverScreen.classList.add('hidden');</p>
+<p class="p2"><span class="Apple-converted-space">                </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>if (!gameLoop.isRunning) {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>gameLoop();</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>function generateAsteroids() {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const topAsteroidHeight = Math.random() * (canvas.height - asteroidGap - 100) + 50;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const bottomAsteroidY = topAsteroidHeight + asteroidGap;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>asteroids.push({</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>x: canvas.width, y: 0, width: asteroidWidth, height: topAsteroidHeight, passed: false, isTop: true</p>
+<p class="p1"><span class="Apple-converted-space">                </span>});</p>
+<p class="p1"><span class="Apple-converted-space">                </span>asteroids.push({</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>x: canvas.width, y: bottomAsteroidY, width: asteroidWidth, height: canvas.height - bottomAsteroidY, passed: false, isTop: false</p>
+<p class="p1"><span class="Apple-converted-space">                </span>});</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>function drawStarfield() {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>ctx.fillStyle = '#000';</p>
+<p class="p1"><span class="Apple-converted-space">                </span>ctx.fillRect(0, 0, canvas.width, canvas.height);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>stars.forEach(star =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>ctx.beginPath();</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>ctx.fillStyle = `rgba(255, 255, 255, ${star.alpha})`;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>ctx.fill();</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>star.x -= 0.5;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>if (star.x &lt; 0) {</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>star.x = canvas.width;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">                </span>});</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>function drawPlayer() {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>if (player.isFarting &amp;&amp; player.fartDuration &gt; 0) {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>player.fartDuration--;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>const cloudX = player.x;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>const cloudY = player.y + player.height - 15;</p>
+<p class="p2"><span class="Apple-converted-space">                    </span></p>
+<p class="p1"><span class="Apple-converted-space">                    </span>ctx.fillStyle = `rgba(144, 238, 144, ${0.6 * (player.fartDuration / 15)})`;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>ctx.beginPath();</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>ctx.arc(cloudX, cloudY, 15, 0, Math.PI * 2);</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>ctx.arc(cloudX + 10, cloudY + 5, 12, 0, Math.PI * 2);</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>ctx.arc(cloudX - 10, cloudY - 5, 10, 0, Math.PI * 2);</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>ctx.closePath();</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>ctx.fill();</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                    </span>if (player.fartDuration &lt;= 0) {</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>player.isFarting = false;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p2"><span class="Apple-converted-space">                </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>ctx.save();</p>
+<p class="p1"><span class="Apple-converted-space">                </span>ctx.translate(player.x + player.width / 2, player.y + player.height / 2);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>let tilt = player.velocityY * 2.5;<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>tilt = Math.max(-20, Math.min(35, tilt));</p>
+<p class="p1"><span class="Apple-converted-space">                </span>ctx.rotate(tilt * Math.PI / 180);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>const pW = player.width;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const pH = player.height;</p>
+<p class="p2"><span class="Apple-converted-space">                </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>// --- Sprite Adjustments ---</p>
+<p class="p1"><span class="Apple-converted-space">                </span>// Larger body, smaller eyes</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const bodyHeight = pH * 0.8;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const bodyWidth = pW * 0.9;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const bodyYOffset = pH * 0.1;<span class="Apple-converted-space"> </span></p>
+<p class="p2"><span class="Apple-converted-space">                </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>ctx.fillStyle = '#D2B48C';</p>
+<p class="p1"><span class="Apple-converted-space">                </span>ctx.strokeStyle = '#8C7853';</p>
+<p class="p1"><span class="Apple-converted-space">                </span>ctx.lineWidth = 3;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>// Body</p>
+<p class="p1"><span class="Apple-converted-space">                </span>ctx.beginPath();</p>
+<p class="p1"><span class="Apple-converted-space">                </span>ctx.ellipse(0, bodyYOffset, bodyWidth / 2, bodyHeight / 2, 0, 0, Math.PI * 2);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>ctx.fill();</p>
+<p class="p1"><span class="Apple-converted-space">                </span>ctx.stroke();</p>
+<p class="p2"><span class="Apple-converted-space">                </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>// Mouth</p>
+<p class="p1"><span class="Apple-converted-space">                </span>ctx.strokeStyle = '#4A2A12'; // Dark brown mouth</p>
+<p class="p1"><span class="Apple-converted-space">                </span>ctx.lineWidth = 2.5;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>ctx.beginPath();</p>
+<p class="p1"><span class="Apple-converted-space">                </span>ctx.moveTo(-10, bodyYOffset - 5);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>ctx.lineTo(10, bodyYOffset - 5);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>ctx.stroke();</p>
+<p class="p2"><br></p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>// Eyes</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const eyeRadius = pW * 0.28; // Made eyes smaller</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const eyeY = -pH * 0.30; // Moved eyes up slightly</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const eyeXOffset = pW * 0.30;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>function drawSingleEye(xPos, yPos) {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>ctx.fillStyle = '#D2B48C';</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>ctx.strokeStyle = '#8C7853';</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>ctx.lineWidth = 3;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>ctx.beginPath();</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>ctx.arc(xPos, yPos, eyeRadius, 0, Math.PI * 2);</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>ctx.fill();</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>ctx.stroke();</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                    </span>ctx.save();</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>ctx.beginPath();</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>ctx.arc(xPos, yPos, eyeRadius, 0, Math.PI * 2);</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>ctx.clip();<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                    </span>ctx.fillStyle = 'black';</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>ctx.beginPath();</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>ctx.moveTo(xPos - eyeRadius * 1.1, yPos - eyeRadius * 0.5);</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>ctx.lineTo(xPos + eyeRadius * 1.1, yPos - eyeRadius * 0.5);</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>ctx.quadraticCurveTo(xPos, yPos + eyeRadius * 1.5, xPos - eyeRadius * 1.1, yPos + eyeRadius * 0.2);</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>ctx.closePath();</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>ctx.fill();</p>
+<p class="p2"><span class="Apple-converted-space">                    </span></p>
+<p class="p1"><span class="Apple-converted-space">                    </span>ctx.strokeStyle = 'white';</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>ctx.lineWidth = 2;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>ctx.stroke();</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                    </span>ctx.fillStyle = 'white';</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>ctx.beginPath();</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>ctx.arc(xPos + eyeRadius * 0.3, yPos - eyeRadius * 0.1, eyeRadius * 0.2, 0, Math.PI * 2);</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>ctx.fill();</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>ctx.beginPath();</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>ctx.arc(xPos - eyeRadius * 0.3, yPos + eyeRadius * 0.4, eyeRadius * 0.12, 0, Math.PI * 2);</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>ctx.fill();</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                    </span>ctx.restore();</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>drawSingleEye(-eyeXOffset, eyeY);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>drawSingleEye(eyeXOffset, eyeY);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>ctx.restore();</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>function drawAsteroid(asteroid) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>ctx.fillStyle = '#808080';</p>
+<p class="p1"><span class="Apple-converted-space">                </span>ctx.strokeStyle = '#A9A9A9';</p>
+<p class="p1"><span class="Apple-converted-space">                </span>ctx.lineWidth = 3;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>ctx.fillRect(asteroid.x, asteroid.y, asteroid.width, asteroid.height);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>ctx.strokeRect(asteroid.x, asteroid.y, asteroid.width, asteroid.height);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>function checkCollision(player, asteroid) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>// Adjusted hitbox for new sprite proportions</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const playerHitbox = {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>x: player.x + 10,</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>y: player.y + 10,</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>width: player.width - 20,</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>height: player.height - 15</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p1"><span class="Apple-converted-space">                </span>return playerHitbox.x &lt; asteroid.x + asteroid.width &amp;&amp;</p>
+<p class="p1"><span class="Apple-converted-space">                       </span>playerHitbox.x + playerHitbox.width &gt; asteroid.x &amp;&amp;</p>
+<p class="p1"><span class="Apple-converted-space">                       </span>playerHitbox.y &lt; asteroid.y + asteroid.height &amp;&amp;</p>
+<p class="p1"><span class="Apple-converted-space">                       </span>playerHitbox.y + playerHitbox.height &gt; asteroid.y;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>function update() {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>player.velocityY += player.gravity;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>player.y += player.velocityY;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>if (player.y + player.height &gt; canvas.height || player.y &lt; 0) {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>setGameOver();</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>if (!gameOver &amp;&amp; frameCount % asteroidInterval === 0) {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>generateAsteroids();</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>for (let i = asteroids.length - 1; i &gt;= 0; i--) {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>let asteroid = asteroids[i];</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>asteroid.x += asteroidSpeed;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                    </span>if (checkCollision(player, asteroid)) {</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>setGameOver();</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                    </span>if (asteroid.x + asteroid.width &lt; player.x &amp;&amp; !asteroid.passed) {</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>if(asteroid.isTop) {</p>
+<p class="p1"><span class="Apple-converted-space">                           </span>score++;</p>
+<p class="p1"><span class="Apple-converted-space">                           </span>playSound('score');</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>asteroid.passed = true;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                    </span>if (asteroid.x + asteroid.width &lt; 0) {</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>asteroids.splice(i, 1);</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>function draw() {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>drawStarfield();</p>
+<p class="p1"><span class="Apple-converted-space">                </span>asteroids.forEach(drawAsteroid);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>drawPlayer();</p>
+<p class="p1"><span class="Apple-converted-space">                </span>ctx.fillStyle = 'white';</p>
+<p class="p1"><span class="Apple-converted-space">                </span>ctx.font = '30px "Press Start 2P"';</p>
+<p class="p1"><span class="Apple-converted-space">                </span>ctx.textAlign = 'center';</p>
+<p class="p1"><span class="Apple-converted-space">                </span>ctx.fillText(score, canvas.width / 2, 50);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>function gameLoop() {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>gameLoop.isRunning = true;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>if (!gameStarted) {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>gameLoop.isRunning = false;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>return;<span class="Apple-converted-space"> </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p2"><span class="Apple-converted-space">                </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>update();</p>
+<p class="p1"><span class="Apple-converted-space">                </span>draw();</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>if (gameOver) {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>finalScoreEl.textContent = score;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>gameOverScreen.classList.remove('hidden');</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>gameLoop.isRunning = false;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>return;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p2"><span class="Apple-converted-space">                </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>frameCount++;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>requestAnimationFrame(gameLoop);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>gameLoop.isRunning = false;</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>function drawInitialState() {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>drawStarfield();</p>
+<p class="p1"><span class="Apple-converted-space">                </span>drawPlayer();</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>drawInitialState();</p>
+<p class="p1"><span class="Apple-converted-space">        </span>};</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/script&gt;</p>
+<p class="p2"><br></p>
+<p class="p1">&lt;/body&gt;</p>
+<p class="p1">&lt;/html&gt;</p>
+</body>
+</html>
